@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Julian/AndroidStudioProjects/EksamenAndroid/app/src/main/res/layout/activity_main.xml" value="0.33695652173913043" />
+        <entry key="..\:/Users/Julian/AndroidStudioProjects/EksamenAndroid/app/src/main/res/layout/recipe_items.xml" value="0.33695652173913043" />
         <entry key="..\:/Users/Julian/Documents/GitHub/EksamenAndroid/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/Julian/Documents/GitHub/EksamenAndroid/app/src/main/res/layout/recipe_items.xml" value="0.264" />
       </map>
