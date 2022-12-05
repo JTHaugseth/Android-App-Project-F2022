@@ -38,8 +38,8 @@ class MainActivity : AppCompatActivity() {
                 val dataItem = RecipeItems()
                 val assetItem = dataArray.get(itemnr)
                 dataItem.title = (assetItem as JSONObject).getJSONObject("recipe").getString("label")
-                dataItem.dietLabel = (assetItem as JSONObject).getJSONObject("recipe").getString("dietLabels")
-                dataItem.healthLabel = (assetItem as JSONObject).getJSONObject("recipe").getString("healthLabels")
+                dataItem.dietLabel = (assetItem as JSONObject).getJSONObject("recipe").getJSONArray("dietLabels").getString(0)
+                dataItem.healthLabel = (assetItem as JSONObject).getJSONObject("recipe").getJSONArray("healthLabels").getString(0)
                 dataItem.cautions = (assetItem as JSONObject).getJSONObject("recipe").getString("cautions")
 
                 allData.add(dataItem)
