@@ -3,6 +3,7 @@ package com.example.eksamenandroid
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -38,9 +39,16 @@ class MainActivity : AppCompatActivity() {
                 val dataItem = RecipeItems()
                 val assetItem = dataArray.get(itemnr)
                 dataItem.title = (assetItem as JSONObject).getJSONObject("recipe").getString("label")
-                dataItem.dietLabel = (assetItem as JSONObject).getJSONObject("recipe").getJSONArray("dietLabels").getString(0)
-                dataItem.healthLabel = (assetItem as JSONObject).getJSONObject("recipe").getJSONArray("healthLabels").getString(0)
-                dataItem.cautions = (assetItem as JSONObject).getJSONObject("recipe").getString("cautions")
+
+                if ((assetItem as JSONObject).getJSONObject("recipe").getJSONArray("dietLabels").length() != 0) {
+                    dataItem.dietLabel = (assetItem as JSONObject).getJSONObject("recipe").getJSONArray("dietLabels").getString(0)
+                } else {dataItem.dietLabel = ""}
+                if ((assetItem as JSONObject).getJSONObject("recipe").getJSONArray("healthLabels").length() != 0) {
+                    dataItem.healthLabel = (assetItem as JSONObject).getJSONObject("recipe").getJSONArray("healthLabels").getString(0)
+                } else {dataItem.healthLabel = ""}
+                if ((assetItem as JSONObject).getJSONObject("recipe").getJSONArray("cautions").length() != 0) {
+                    dataItem.cautions = (assetItem as JSONObject).getJSONObject("recipe").getJSONArray("cautions").getString(0)
+                } else {dataItem.cautions = ""}
 
                 allData.add(dataItem)
             }
