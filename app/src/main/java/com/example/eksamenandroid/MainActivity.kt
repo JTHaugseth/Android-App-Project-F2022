@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity() {
             (0 until dataArray.length()).forEach{itemnr ->
                 val dataItem = RecipeItems()
                 val assetItem = dataArray.get(itemnr)
+                dataItem.image = (assetItem as JSONObject).getJSONObject("recipe").getString("image")
                 dataItem.title = (assetItem as JSONObject).getJSONObject("recipe").getString("label")
 
                 if ((assetItem as JSONObject).getJSONObject("recipe").getJSONArray("dietLabels").length() != 0) {

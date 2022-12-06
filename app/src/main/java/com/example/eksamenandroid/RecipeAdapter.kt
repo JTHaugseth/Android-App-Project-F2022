@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.recipe_items.view.*
 
 class RecipeAdapter(val allData: ArrayList<RecipeItems>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -24,6 +25,7 @@ class RecipeAdapter(val allData: ArrayList<RecipeItems>) : RecyclerView.Adapter<
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val currentItem = allData[position]
         holder.itemView.apply {
+            Picasso.get().load(currentItem.image).into(RecipeImage)
             RecipeName.text = currentItem.title
             DietLabel.text = currentItem.dietLabel
             HealthLabel.text = currentItem.healthLabel
