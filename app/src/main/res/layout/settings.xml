@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/SettingsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Settings"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/Calories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Calories per day"
+        android:textSize="25sp"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SettingsTitle" />
+
+    <EditText
+        android:id="@+id/CaloriesInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="3000"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/Calories"
+        app:layout_constraintTop_toBottomOf="@+id/SettingsTitle" />
+
+    <TextView
+        android:id="@+id/MaxHistoryItemsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Max history items"
+        android:textSize="25sp"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Calories" />
+
+    <EditText
+        android:id="@+id/MaxHistoryItemsInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="10"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/MaxHistoryItemsText"
+        app:layout_constraintTop_toBottomOf="@+id/CaloriesInput" />
+
+    <TextView
+        android:id="@+id/DietText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Desired Diet"
+        android:textSize="25sp"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/MaxHistoryItemsText" />
+
+    <Spinner
+        android:id="@+id/DietDropDown"
+        android:layout_width="117dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="17dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/DietText"
+        app:layout_constraintTop_toBottomOf="@+id/MaxHistoryItemsInput"
+        android:entries="@array/Diet"
+        android:onItemSelected="onDietItemSelected"/>
+
+    <TextView
+        android:id="@+id/CuisineType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="Cuisine Type"
+        android:textSize="25sp"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/DietText" />
+
+    <Spinner
+        android:id="@+id/CuisineDropDown"
+        android:layout_width="117dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/CuisineType"
+        app:layout_constraintTop_toBottomOf="@+id/DietDropDown"
+        android:entries="@array/Cuisine"
+        android:onItemSelected="onCuisineItemSelected"/>
+
+    <TextView
+        android:id="@+id/MealType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Meal Type"
+        android:textSize="25sp"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CuisineType" />
+
+    <Spinner
+        android:id="@+id/MealTypeDropDown"
+        android:layout_width="117dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="22dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/MealType"
+        app:layout_constraintTop_toBottomOf="@+id/CuisineDropDown"
+        android:entries="@array/Mealtype"
+        android:onItemSelected="onMealTypeItemSelected" />
+
+    <Button
+        android:id="@+id/SaveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SAVE"
+        android:textSize="30sp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

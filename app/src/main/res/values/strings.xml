@@ -1,3 +1,31 @@
 <resources>
     <string name="app_name">Eksamen Android</string>
+    <string-array name="Diet">
+        <item>none</item>
+        <item>balanced</item>
+        <item>high-fiber</item>
+        <item>high-Protein</item>
+        <item>low-carbs</item>
+        <item>low-fat</item>
+        <item>low-sodium</item>
+    </string-array>
+    <string-array name="Cuisine">
+        <item>none</item>
+        <item>American</item>
+        <item>Asian</item>
+        <item>British</item>
+        <item>Caribbean</item>
+        <item>Central Europe</item>
+        <item>Chinese</item>
+        <item>Eastern Europe</item>
+        <item>French</item>
+    </string-array>
+    <string-array name="Mealtype">
+        <item>none</item>
+        <item>Breakfast</item>
+        <item>Lunch</item>
+        <item>Dinner</item>
+        <item>Snack</item>
+        <item>Teatime</item>
+    </string-array>
 </resources>
