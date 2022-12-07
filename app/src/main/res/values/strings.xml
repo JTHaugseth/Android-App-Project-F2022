@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Eksamen Android</string>
     <string-array name="Diet">
-        <item>none</item>
+        <item>Not specified</item>
         <item>balanced</item>
         <item>high-fiber</item>
         <item>high-Protein</item>
@@ -10,7 +10,7 @@
         <item>low-sodium</item>
     </string-array>
     <string-array name="Cuisine">
-        <item>none</item>
+        <item>All</item>
         <item>American</item>
         <item>Asian</item>
         <item>British</item>
@@ -21,7 +21,7 @@
         <item>French</item>
     </string-array>
     <string-array name="Mealtype">
-        <item>none</item>
+        <item>All</item>
         <item>Breakfast</item>
         <item>Lunch</item>
         <item>Dinner</item>
