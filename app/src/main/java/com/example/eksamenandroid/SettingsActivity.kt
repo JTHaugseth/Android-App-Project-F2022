@@ -46,6 +46,7 @@ class SettingsActivity() : AppCompatActivity() {
         val cuisineDropDownChoice = findViewById<Spinner>(R.id.CuisineDropDown)
         val mealTypeDropDownChoice = findViewById<Spinner>(R.id.MealTypeDropDown)
 
+
         val db = recipesDB.readableDatabase
         val cursor = db.query("Settings", null, null, null, null, null, null, null)
 
@@ -78,6 +79,7 @@ class SettingsActivity() : AppCompatActivity() {
     }
 
     fun update(caloriesInput: Int, maxHistoryItemsInput: Int, dietInput: String, cuisineInput: String, mealTypeInput: String) {
+        val url = "&mealType=$mealTypeInput&mealType=$cuisineInput&mealType=$dietInput"
         val db = recipesDB.writableDatabase
         val values = ContentValues()
         values.put("calories", caloriesInput)
@@ -85,6 +87,7 @@ class SettingsActivity() : AppCompatActivity() {
         values.put("diet", dietInput)
         values.put("cuisine", cuisineInput)
         values.put("mealtype", mealTypeInput)
+        values.put("url", url)
 
         db.update("Settings", values, "id = ?", arrayOf("1"))
     }

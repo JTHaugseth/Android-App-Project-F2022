@@ -65,6 +65,28 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun getSettingsFromDB(){
+        val recipesDB = RecipesDB(this)
+        val db = recipesDB.readableDatabase
+        val cursor = db.query("Settings", null, null, null, null, null, null, null)
+
+
+
+        while (cursor.moveToNext()) {
+             val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
+            val calories = cursor.getString(cursor.getColumnIndexOrThrow("calories"))
+            val history_items = cursor.getString(cursor.getColumnIndexOrThrow("history_items"))
+            val diet = cursor.getString(cursor.getColumnIndexOrThrow("diet"))
+            val cuisine = cursor.getString(cursor.getColumnIndexOrThrow("cuisine"))
+            val mealtype = cursor.getString(cursor.getColumnIndexOrThrow("mealtype"))
+        }
+
+
+    }
+    fun filterRecipies() {
+
+    }
+
     suspend fun getRecipes(timeOfDay: String, searchQuery: String): ArrayList<RecipeItems>{
 
         val allData = ArrayList<RecipeItems>()
