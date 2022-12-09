@@ -60,7 +60,19 @@ class SettingsActivity() : AppCompatActivity() {
 
             caloriesText.setText("$calories")
             maxHistoryItemsText.setText("$history_items")
-            dietDropDownChoice.setSelection()
+
+            val dietAdapter = dietDropDownChoice.adapter as ArrayAdapter<String>
+            val selectedDietIndex = dietAdapter.getPosition(diet)
+            dietDropDownChoice.setSelection(selectedDietIndex)
+
+            val cuisineAdapter = cuisineDropDownChoice.adapter as ArrayAdapter<String>
+            val selectedCuisineIndex = cuisineAdapter.getPosition(cuisine)
+            cuisineDropDownChoice.setSelection(selectedCuisineIndex)
+
+            val mealtypeAdapter = mealTypeDropDownChoice.adapter as ArrayAdapter<String>
+            val selectedMealtypeIndex = mealtypeAdapter.getPosition(mealtype)
+            mealTypeDropDownChoice.setSelection(selectedMealtypeIndex)
+
             Log.i("Settings","id: $id, calories: $calories, History-Items: $history_items, Diet: $diet, Cuisine: $cuisine, Meal-Type: $mealtype, URL: $url")
         }
     }
