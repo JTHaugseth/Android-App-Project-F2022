@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="History"
+        android:onClick="openSearchHistory"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -19,8 +20,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Favorites"
-        app:layout_constraintEnd_toStartOf="@+id/SettingsButton"
         app:layout_constraintStart_toEndOf="@+id/SearchHistoryButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/TodaysMealsButton"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="T"
+        android:onClick="openTodaysMeals"
+        app:layout_constraintEnd_toStartOf="@+id/SettingsButton"
+        app:layout_constraintStart_toEndOf="@+id/FavoritesButton"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button

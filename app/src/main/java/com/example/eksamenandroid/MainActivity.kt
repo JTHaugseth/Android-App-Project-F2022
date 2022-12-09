@@ -104,6 +104,14 @@ class MainActivity : AppCompatActivity() {
         return allData
     }
 
+    fun openSearchHistory(view: View) {
+        val intent = Intent(this, SearchHistory::class.java)
+        startActivity(intent)
+    }
+    fun openTodaysMeals(view: View) {
+        val intent = Intent(this, TodaysMeals::class.java)
+        startActivity(intent)
+    }
     fun openSettings(view: View) {
         val intent = Intent(this, SettingsActivity::class.java)
         startActivity(intent)
