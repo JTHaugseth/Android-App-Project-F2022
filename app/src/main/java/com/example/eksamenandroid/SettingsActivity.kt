@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
 
@@ -19,30 +19,33 @@ class SettingsActivity() : AppCompatActivity() {
         // Bruka onCreate til å kjøre testa mot functions.
 
         //insert()
-        //read()
+        readAndSetViews()
         //update()
         //delete()
     }
 
     private val recipesDB = RecipesDB(this)
 
-
-    // Dinne funka sann den skal.
     fun insert() {
         val db = recipesDB.writableDatabase
         val values = ContentValues()
         values.put("id", 1)
         values.put("calories", 3000)
-        values.put("history_items", 20)
-        values.put("diet", "Vegetarian")
-        values.put("cuisine", "Norwegian")
+        values.put("history_items", 10)
+        values.put("diet", "balanced")
+        values.put("cuisine", "American")
         values.put("mealtype", "Dinner")
         values.put("url", "ThisURL")
         db.insert("Settings", null, values)
     }
 
-    // Dinne funka sann den skal.
-    fun read() {
+    fun readAndSetViews() {
+        val caloriesText = findViewById<EditText>(R.id.CaloriesInput)
+        val maxHistoryItemsText = findViewById<EditText>(R.id.MaxHistoryItemsInput)
+        val dietDropDownChoice = findViewById<Spinner>(R.id.DietDropDown)
+        val cuisineDropDownChoice = findViewById<Spinner>(R.id.CuisineDropDown)
+        val mealTypeDropDownChoice = findViewById<Spinner>(R.id.MealTypeDropDown)
+
         val db = recipesDB.readableDatabase
         val cursor = db.query("Settings", null, null, null, null, null, null, null)
 
@@ -55,22 +58,25 @@ class SettingsActivity() : AppCompatActivity() {
             val mealtype = cursor.getString(cursor.getColumnIndexOrThrow("mealtype"))
             val url = cursor.getString(cursor.getColumnIndexOrThrow("url"))
 
+            caloriesText.setText("$calories")
+            maxHistoryItemsText.setText("$history_items")
+            dietDropDownChoice.setSelection()
             Log.i("Settings","id: $id, calories: $calories, History-Items: $history_items, Diet: $diet, Cuisine: $cuisine, Meal-Type: $mealtype, URL: $url")
         }
     }
 
-    // Dinne funka sann den skal.
-    fun update() {
+    fun update(caloriesInput: Int, maxHistoryItemsInput: Int, dietInput: String, cuisineInput: String, mealTypeInput: String) {
         val db = recipesDB.writableDatabase
         val values = ContentValues()
-        values.put("calories", 5000)
-        values.put("history_items", 10)
-        values.put("mealtype", "Breakfast")
+        values.put("calories", caloriesInput)
+        values.put("history_items", maxHistoryItemsInput)
+        values.put("diet", dietInput)
+        values.put("cuisine", cuisineInput)
+        values.put("mealtype", mealTypeInput)
 
         db.update("Settings", values, "id = ?", arrayOf("1"))
     }
 
-    // Dinne funka sann den skal.
     fun delete() {
         val db = recipesDB.writableDatabase
         db.delete("Settings", "id = ?", arrayOf("1"))
@@ -83,28 +89,11 @@ class SettingsActivity() : AppCompatActivity() {
         val cuisineDropDown = findViewById<Spinner>(R.id.CuisineDropDown)
         val mealTypeDropDown = findViewById<Spinner>(R.id.MealTypeDropDown)
 
-        var dietInput: String? = null
-        var cuisineInput: String? = null
-        var mealTypeInput: String? = null
+        var dietInput = dietDropDown.selectedItem as String
+        var cuisineInput = cuisineDropDown.selectedItem as String
+        var mealTypeInput = mealTypeDropDown.selectedItem as String
 
-        dietDropDown.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                dietInput = parent.getItemAtPosition(position) as String
-            }
-            override fun onNothingSelected(p0: AdapterView<*>?) {}
-        }
-        cuisineDropDown.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                cuisineInput = parent.getItemAtPosition(position) as String
-            }
-            override fun onNothingSelected(p0: AdapterView<*>?) {}
-        }
-        mealTypeDropDown.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                mealTypeInput = parent.getItemAtPosition(position) as String
-            }
-            override fun onNothingSelected(p0: AdapterView<*>?) {}
-        }
+        update(caloriesInput, maxHistoryItemsInput, dietInput, cuisineInput, mealTypeInput)
 
         Log.i("Current update rapport", "Calories: $caloriesInput, Max History Items: $maxHistoryItemsInput, Diet: $dietInput, Cuisine: $cuisineInput, MealType: $mealTypeInput")
 
