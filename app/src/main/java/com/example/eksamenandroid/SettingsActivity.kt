@@ -74,12 +74,11 @@ class SettingsActivity() : AppCompatActivity() {
             val selectedMealtypeIndex = mealtypeAdapter.getPosition(mealtype)
             mealTypeDropDownChoice.setSelection(selectedMealtypeIndex)
 
-            Log.i("Settings","id: $id, calories: $calories, History-Items: $history_items, Diet: $diet, Cuisine: $cuisine, Meal-Type: $mealtype, URL: $url")
+            Log.i("Settings","id: $id, calories: $calories, History-Items: $history_items, Diet: $diet, Cuisine: $cuisine, Meal-Type: $mealtype")
         }
     }
 
     fun update(caloriesInput: Int, maxHistoryItemsInput: Int, dietInput: String, cuisineInput: String, mealTypeInput: String) {
-        val url = "&mealType=$mealTypeInput&mealType=$cuisineInput&mealType=$dietInput"
         val db = recipesDB.writableDatabase
         val values = ContentValues()
         values.put("calories", caloriesInput)
@@ -87,7 +86,7 @@ class SettingsActivity() : AppCompatActivity() {
         values.put("diet", dietInput)
         values.put("cuisine", cuisineInput)
         values.put("mealtype", mealTypeInput)
-        values.put("url", url)
+
 
         db.update("Settings", values, "id = ?", arrayOf("1"))
     }

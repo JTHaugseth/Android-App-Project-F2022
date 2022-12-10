@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
 
                 rv.adapter = RecipeAdapter(allData)
             }
+            filterRecipes()
         }
     }
 
@@ -65,25 +66,32 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun getSettingsFromDB(){
-        val recipesDB = RecipesDB(this)
-        val db = recipesDB.readableDatabase
-        val cursor = db.query("Settings", null, null, null, null, null, null, null)
 
 
 
-        while (cursor.moveToNext()) {
-             val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
-            val calories = cursor.getString(cursor.getColumnIndexOrThrow("calories"))
-            val history_items = cursor.getString(cursor.getColumnIndexOrThrow("history_items"))
-            val diet = cursor.getString(cursor.getColumnIndexOrThrow("diet"))
-            val cuisine = cursor.getString(cursor.getColumnIndexOrThrow("cuisine"))
-            val mealtype = cursor.getString(cursor.getColumnIndexOrThrow("mealtype"))
+    fun filterRecipes(){
+
+        var url = "https://api.edamam.com/api/recipes/v2?app_key=89289943ee654421a0a4925ef267f71f&app_id=fd84bb48&type=public&"
+        val getSettings = getSettingsFromDB()
+
+        val diet = getSettings.diet
+        val cuisine = getSettings.cuisine
+        val mealtype = getSettings.mealtype
+
+        Log.i("diet", diet)
+        Log.i("cuisine", cuisine)
+        Log.i("mealtype", mealtype)
+
+        if(diet != "not specified"){
+            url += "$url&dietLabels=$diet"
         }
-
-
-    }
-    fun filterRecipies() {
+        if(cuisine!="all"){
+            url += "$url&Cuisine=$cuisine"
+        }
+        if(mealtype!="all"){
+            url += "$url&mealtype=$cuisine"
+        }
+        Log.i("url", url)
 
     }
 
@@ -137,5 +145,29 @@ class MainActivity : AppCompatActivity() {
     fun openSettings(view: View) {
         val intent = Intent(this, SettingsActivity::class.java)
         startActivity(intent)
+    }
+
+    data class MySettings(val id: Int, val calories: String, val history_items: String, val diet: String, val cuisine: String, val mealtype: String)
+
+    fun getSettingsFromDB(): MySettings {
+        val recipesDB = RecipesDB(this)
+        val db = recipesDB.readableDatabase
+
+        val cursor = db.query("Settings", null, null, null, null, null, null, null)
+
+        cursor.moveToFirst()
+        val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
+        val calories = cursor.getString(cursor.getColumnIndexOrThrow("calories"))
+        val history_items = cursor.getString(cursor.getColumnIndexOrThrow("history_items"))
+        val diet = cursor.getString(cursor.getColumnIndexOrThrow("diet"))
+        val cuisine = cursor.getString(cursor.getColumnIndexOrThrow("cuisine"))
+        val mealtype = cursor.getString(cursor.getColumnIndexOrThrow("mealtype"))
+
+        Log.i("yes", diet)
+
+        cursor.close()
+        db.close()
+
+        return MySettings(id, calories, history_items, diet, cuisine, mealtype)
     }
 }
