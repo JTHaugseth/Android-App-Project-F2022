@@ -37,15 +37,13 @@ class MainActivity : AppCompatActivity() {
 
         searchButton.setOnClickListener {
             val timeOfDay = "https://api.edamam.com/api/recipes/v2?app_key=89289943ee654421a0a4925ef267f71f&app_id=fd84bb48&type=public&mealType=${getRecipesTimeOfDay()}"
-            val searchQueryString = searchInput.text.toString()
-            val searchQuery = "https://api.edamam.com/api/recipes/v2?app_key=89289943ee654421a0a4925ef267f71f&app_id=fd84bb48&type=public&q=$searchQueryString"
-
+            val searchQuery = filterRecipes()
+            Log.i("testy", searchQuery)
             GlobalScope.launch(Dispatchers.Main){
                 val allData = getRecipes(timeOfDay, searchQuery)
-
                 rv.adapter = RecipeAdapter(allData)
             }
-            filterRecipes()
+
         }
     }
 
@@ -69,30 +67,43 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    fun filterRecipes(){
-
-        var url = "https://api.edamam.com/api/recipes/v2?app_key=89289943ee654421a0a4925ef267f71f&app_id=fd84bb48&type=public&"
+    fun filterRecipes(): String{
+        val searchInput = findViewById<EditText>(R.id.InputText)
+        val searchQueryString = searchInput.text.toString()
+        var updatedSearchString = searchQueryString
+        if(searchQueryString.contains(' ')){
+            updatedSearchString = searchQueryString.replace(' ', '-')
+        }
+        Log.i("randomstuff2", updatedSearchString)
+        var url = "https://api.edamam.com/api/recipes/v2?app_key=89289943ee654421a0a4925ef267f71f&app_id=fd84bb48&type=public&q=$updatedSearchString"
         val getSettings = getSettingsFromDB()
+
+        val dietString = getSettings.diet.toString()
+        val cuisineString = getSettings.cuisine.toString()
+        val mealtypeString = getSettings.mealtype.toString()
 
         val diet = getSettings.diet
         val cuisine = getSettings.cuisine
         val mealtype = getSettings.mealtype
 
-        Log.i("diet", diet)
-        Log.i("cuisine", cuisine)
+
         Log.i("mealtype", mealtype)
+        Log.i("cuisine", cuisine)
+        Log.i("diet", diet)
 
-        if(diet != "not specified"){
-            url += "$url&dietLabels=$diet"
+        if(mealtypeString!="All"){
+            url = "$url&mealType=$mealtype"
         }
-        if(cuisine!="all"){
-            url += "$url&Cuisine=$cuisine"
+
+        if(dietString != "Not specified"){
+            url = "$url&Diet=$diet"
         }
-        if(mealtype!="all"){
-            url += "$url&mealtype=$cuisine"
+        if(cuisineString!="All"){
+            url = "$url&cuisineType=$cuisine"
         }
+
         Log.i("url", url)
-
+        return url
     }
 
     suspend fun getRecipes(timeOfDay: String, searchQuery: String): ArrayList<RecipeItems>{
