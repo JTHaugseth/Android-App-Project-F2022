@@ -64,9 +64,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
-
-
     fun filterRecipes(): String{
         val searchInput = findViewById<EditText>(R.id.InputText)
         val searchQueryString = searchInput.text.toString()
