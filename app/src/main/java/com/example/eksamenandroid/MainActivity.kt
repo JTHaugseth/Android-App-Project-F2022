@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         val rv = findViewById<RecyclerView>(R.id.MainRV)
         val searchInput = findViewById<EditText>(R.id.InputText)
         val searchButton = findViewById<Button>(R.id.SearchButton)
+        val selectButton = findViewById<Button>(R.id.SelectButton)
 
         GlobalScope.launch(Dispatchers.Main){
             val timeOfDay = "https://api.edamam.com/api/recipes/v2?app_key=89289943ee654421a0a4925ef267f71f&app_id=fd84bb48&type=public&mealType=${getRecipesTimeOfDay()}"
@@ -44,6 +45,14 @@ class MainActivity : AppCompatActivity() {
                 rv.adapter = RecipeAdapter(allData)
             }
 
+        }
+
+        searchButton.setOnClickListener {
+            val meal = ""
+            //finne objektet brukeren trykker select på
+            //adde det i en liste
+            //export listen til todays meals
+            //print listen med noen endringer.
         }
     }
 
@@ -82,7 +91,6 @@ class MainActivity : AppCompatActivity() {
         val diet = getSettings.diet
         val cuisine = getSettings.cuisine
         val mealtype = getSettings.mealtype
-
 
         Log.i("mealtype", mealtype)
         Log.i("cuisine", cuisine)
