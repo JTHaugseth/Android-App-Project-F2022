@@ -142,6 +142,8 @@ class MainActivity : AppCompatActivity() {
         return allData
     }
 
+
+
     fun openSearchHistory(view: View) {
         val intent = Intent(this, SearchHistory::class.java)
         startActivity(intent)
@@ -170,8 +172,6 @@ class MainActivity : AppCompatActivity() {
         val diet = cursor.getString(cursor.getColumnIndexOrThrow("diet"))
         val cuisine = cursor.getString(cursor.getColumnIndexOrThrow("cuisine"))
         val mealtype = cursor.getString(cursor.getColumnIndexOrThrow("mealtype"))
-
-        Log.i("yes", diet)
 
         cursor.close()
         db.close()
