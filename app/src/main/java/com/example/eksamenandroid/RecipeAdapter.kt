@@ -2,7 +2,6 @@ package com.example.eksamenandroid
 
 import android.app.Activity
 import android.content.ContentValues
-import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,11 +10,10 @@ import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.recipe_items.view.*
-import kotlinx.coroutines.NonDisposableHandle.parent
 
 class RecipeAdapter(private val activity: Activity, val allData: ArrayList<RecipeItems>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    inner class ViewHolder(val view: View): RecyclerView.ViewHolder(view)
+    inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ViewHolder(
@@ -24,19 +22,13 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
                 parent,
                 false
             )
-
         )
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val currentActivity = activity
-        val context = holder.itemView.context
         val selectButton = holder.itemView.findViewById<Button>(R.id.SelectButton)
         val currentItem = allData[position]
-
-        selectButton.setOnClickListener {
-            runSelect(currentActivity, context, currentItem.title, currentItem.image, currentItem.calories, currentItem.dietLabel, currentItem.healthLabel, currentItem.cautions)
-        }
 
         holder.itemView.apply {
             Picasso.get().load(currentItem.image).into(RecipeImage)
@@ -45,34 +37,39 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
             HealthLabel.text = currentItem.healthLabel
             Cautions.text = currentItem.cautions
         }
+
+        selectButton.setOnClickListener {
+            when (currentActivity) {
+                is MainActivity -> {
+                    val recipesDB = RecipesDB(activity)
+                    val db = recipesDB.writableDatabase
+                    val values = ContentValues()
+                    values.put("title", currentItem.title)
+                    values.put("image", currentItem.image)
+                    values.put("calories", currentItem.calories)
+                    values.put("dietLabel", currentItem.dietLabel)
+                    values.put("healthLabel", currentItem.healthLabel)
+                    values.put("cautions", currentItem.cautions)
+                    db.insert("TodaysMeals", null, values)
+
+                    Log.i("Activity access", "${currentItem.title} added")
+                }
+                //is TodaysMeals -> {
+
+                //}
+            }
+        }
     }
+
 
     override fun getItemCount(): Int {
         return allData.size
     }
+}
 
-    private fun runSelect(currentActivity: Activity, context: Context, title: String?, image: String?, calories: Int?, dietLabel: String?, healthLabel: String?, cautions: String?) {
-        when (currentActivity) {
-            is MainActivity -> {
-                val recipesDB = RecipesDB(context)
-                val db = recipesDB.writableDatabase
-                val values = ContentValues()
-                values.put("title", title)
-                values.put("image", image)
-                values.put("calories", calories)
-                values.put("dietLabel", dietLabel)
-                values.put("healthLabel", healthLabel)
-                values.put("cautions", cautions)
-                db.insert("TodaysMeals", null, values)
 
-                Log.i("Activity access", "$title added")
-            }
-            //is TodaysMeals -> {
 
-            //}
-        }
-    }
-    }
+
 
 
 

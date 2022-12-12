@@ -12,12 +12,10 @@ class TodaysMeals : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.todays_meals)
-        setValues()
 
         val rv = findViewById<RecyclerView>(R.id.TodaysMealsRV)
         val allData = read()
-        rv.adapter = RecipeAdapter(this, allData)
-        Log.i("AlldataArray", allData.toString())
+        rv.adapter = RecipeAdapter(this@TodaysMeals, allData)
     }
 
     fun read() : ArrayList<RecipeItems>{
@@ -38,28 +36,8 @@ class TodaysMeals : AppCompatActivity() {
             allData.add(dataItem)
         }
         return allData
-        Log.i("AlldataCLEANINFO", allData.toString())
     }
 
-    fun setValues() {
-        val calories = getCaloriesFromDb()
-        val maxCalories = findViewById<TextView>(R.id.TodaysCalories)
-        maxCalories.text = "0/"+calories
-    }
-
-    fun getCaloriesFromDb(): String {
-        val recipesDB = RecipesDB(this)
-        val db = recipesDB.readableDatabase
-        val cursor = db.query("Settings", null, null, null, null, null, null, null)
-
-        cursor.moveToFirst()
-        val calories = cursor.getString(cursor.getColumnIndexOrThrow("calories"))
-
-        cursor.close()
-        db.close()
-
-        return  calories
-    }
 
     fun returnToMainMenu(view: View) {
         val intent = Intent(this, MainActivity::class.java)
