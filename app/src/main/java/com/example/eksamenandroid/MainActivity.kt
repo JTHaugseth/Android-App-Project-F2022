@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         val rv = findViewById<RecyclerView>(R.id.MainRV)
         val searchInput = findViewById<EditText>(R.id.InputText)
         val searchButton = findViewById<Button>(R.id.SearchButton)
+        val selectButton = findViewById<Button>(R.id.SelectButton)
 
         GlobalScope.launch(Dispatchers.Main){
             val timeOfDay = "https://api.edamam.com/api/recipes/v2?app_key=89289943ee654421a0a4925ef267f71f&app_id=fd84bb48&type=public&mealType=${getRecipesTimeOfDay()}"
@@ -37,14 +38,21 @@ class MainActivity : AppCompatActivity() {
 
         searchButton.setOnClickListener {
             val timeOfDay = "https://api.edamam.com/api/recipes/v2?app_key=89289943ee654421a0a4925ef267f71f&app_id=fd84bb48&type=public&mealType=${getRecipesTimeOfDay()}"
-            val searchQueryString = searchInput.text.toString()
-            val searchQuery = "https://api.edamam.com/api/recipes/v2?app_key=89289943ee654421a0a4925ef267f71f&app_id=fd84bb48&type=public&q=$searchQueryString"
-
+            val searchQuery = filterRecipes()
+            Log.i("testy", searchQuery)
             GlobalScope.launch(Dispatchers.Main){
                 val allData = getRecipes(timeOfDay, searchQuery)
-
                 rv.adapter = RecipeAdapter(allData)
             }
+
+        }
+
+        searchButton.setOnClickListener {
+            val meal = ""
+            //finne objektet brukeren trykker select på
+            //adde det i en liste
+            //export listen til todays meals
+            //print listen med noen endringer.
         }
     }
 
@@ -63,6 +71,44 @@ class MainActivity : AppCompatActivity() {
         } else {
             "Teatime"
         }
+    }
+
+    fun filterRecipes(): String{
+        val searchInput = findViewById<EditText>(R.id.InputText)
+        val searchQueryString = searchInput.text.toString()
+        var updatedSearchString = searchQueryString
+        if(searchQueryString.contains(' ')){
+            updatedSearchString = searchQueryString.replace(' ', '-')
+        }
+        Log.i("randomstuff2", updatedSearchString)
+        var url = "https://api.edamam.com/api/recipes/v2?app_key=89289943ee654421a0a4925ef267f71f&app_id=fd84bb48&type=public&q=$updatedSearchString"
+        val getSettings = getSettingsFromDB()
+
+        val dietString = getSettings.diet.toString()
+        val cuisineString = getSettings.cuisine.toString()
+        val mealtypeString = getSettings.mealtype.toString()
+
+        val diet = getSettings.diet
+        val cuisine = getSettings.cuisine
+        val mealtype = getSettings.mealtype
+
+        Log.i("mealtype", mealtype)
+        Log.i("cuisine", cuisine)
+        Log.i("diet", diet)
+
+        if(mealtypeString!="All"){
+            url = "$url&mealType=$mealtype"
+        }
+
+        if(dietString != "Not specified"){
+            url = "$url&Diet=$diet"
+        }
+        if(cuisineString!="All"){
+            url = "$url&cuisineType=$cuisine"
+        }
+
+        Log.i("url", url)
+        return url
     }
 
     suspend fun getRecipes(timeOfDay: String, searchQuery: String): ArrayList<RecipeItems>{
@@ -104,6 +150,8 @@ class MainActivity : AppCompatActivity() {
         return allData
     }
 
+
+
     fun openSearchHistory(view: View) {
         val intent = Intent(this, SearchHistory::class.java)
         startActivity(intent)
@@ -115,5 +163,27 @@ class MainActivity : AppCompatActivity() {
     fun openSettings(view: View) {
         val intent = Intent(this, SettingsActivity::class.java)
         startActivity(intent)
+    }
+
+    data class MySettings(val id: Int, val calories: String, val history_items: String, val diet: String, val cuisine: String, val mealtype: String)
+
+    fun getSettingsFromDB(): MySettings {
+        val recipesDB = RecipesDB(this)
+        val db = recipesDB.readableDatabase
+
+        val cursor = db.query("Settings", null, null, null, null, null, null, null)
+
+        cursor.moveToFirst()
+        val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
+        val calories = cursor.getString(cursor.getColumnIndexOrThrow("calories"))
+        val history_items = cursor.getString(cursor.getColumnIndexOrThrow("history_items"))
+        val diet = cursor.getString(cursor.getColumnIndexOrThrow("diet"))
+        val cuisine = cursor.getString(cursor.getColumnIndexOrThrow("cuisine"))
+        val mealtype = cursor.getString(cursor.getColumnIndexOrThrow("mealtype"))
+
+        cursor.close()
+        db.close()
+
+        return MySettings(id, calories, history_items, diet, cuisine, mealtype)
     }
 }

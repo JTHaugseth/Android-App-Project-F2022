@@ -46,6 +46,7 @@ class SettingsActivity() : AppCompatActivity() {
         val cuisineDropDownChoice = findViewById<Spinner>(R.id.CuisineDropDown)
         val mealTypeDropDownChoice = findViewById<Spinner>(R.id.MealTypeDropDown)
 
+
         val db = recipesDB.readableDatabase
         val cursor = db.query("Settings", null, null, null, null, null, null, null)
 
@@ -73,7 +74,7 @@ class SettingsActivity() : AppCompatActivity() {
             val selectedMealtypeIndex = mealtypeAdapter.getPosition(mealtype)
             mealTypeDropDownChoice.setSelection(selectedMealtypeIndex)
 
-            Log.i("Settings","id: $id, calories: $calories, History-Items: $history_items, Diet: $diet, Cuisine: $cuisine, Meal-Type: $mealtype, URL: $url")
+            Log.i("Settings","id: $id, calories: $calories, History-Items: $history_items, Diet: $diet, Cuisine: $cuisine, Meal-Type: $mealtype")
         }
     }
 
@@ -85,6 +86,7 @@ class SettingsActivity() : AppCompatActivity() {
         values.put("diet", dietInput)
         values.put("cuisine", cuisineInput)
         values.put("mealtype", mealTypeInput)
+
 
         db.update("Settings", values, "id = ?", arrayOf("1"))
     }
