@@ -27,13 +27,11 @@ class MainActivity : AppCompatActivity() {
         val rv = findViewById<RecyclerView>(R.id.MainRV)
         val searchInput = findViewById<EditText>(R.id.InputText)
         val searchButton = findViewById<Button>(R.id.SearchButton)
-        val selectButton = findViewById<Button>(R.id.SelectButton)
 
         GlobalScope.launch(Dispatchers.Main){
             val timeOfDay = "https://api.edamam.com/api/recipes/v2?app_key=89289943ee654421a0a4925ef267f71f&app_id=fd84bb48&type=public&mealType=${getRecipesTimeOfDay()}"
             val searchQuery = ""
             val allData = getRecipes(timeOfDay, searchQuery)
-
 
             rv.adapter = RecipeAdapter(this@MainActivity, allData)
         }
@@ -47,14 +45,6 @@ class MainActivity : AppCompatActivity() {
                 rv.adapter = RecipeAdapter(this@MainActivity, allData)
             }
         }
-
-        /*selectButton.setOnClickListener {
-            val meal = ""
-            //finne objektet brukeren trykker select på
-            //adde det i en liste
-            //export listen til todays meals
-            //print listen med noen endringer.
-        }*/
     }
 
     fun getRecipesTimeOfDay(): String {
@@ -100,7 +90,6 @@ class MainActivity : AppCompatActivity() {
         if(mealtypeString!="All"){
             url = "$url&mealType=$mealtype"
         }
-
         if(dietString != "Not specified"){
             url = "$url&Diet=$diet"
         }
@@ -150,23 +139,7 @@ class MainActivity : AppCompatActivity() {
                 allData.add(dataItem)
             }
         }.await()
-
         return allData
-    }
-
-
-
-    fun openSearchHistory(view: View) {
-        val intent = Intent(this, SearchHistory::class.java)
-        startActivity(intent)
-    }
-    fun openTodaysMeals(view: View) {
-        val intent = Intent(this, TodaysMeals::class.java)
-        startActivity(intent)
-    }
-    fun openSettings(view: View) {
-        val intent = Intent(this, SettingsActivity::class.java)
-        startActivity(intent)
     }
 
     data class MySettings(val id: Int, val calories: String, val history_items: String, val diet: String, val cuisine: String, val mealtype: String)
@@ -189,5 +162,18 @@ class MainActivity : AppCompatActivity() {
         db.close()
 
         return MySettings(id, calories, history_items, diet, cuisine, mealtype)
+    }
+
+    fun openSearchHistory(view: View) {
+        val intent = Intent(this, SearchHistory::class.java)
+        startActivity(intent)
+    }
+    fun openTodaysMeals(view: View) {
+        val intent = Intent(this, TodaysMeals::class.java)
+        startActivity(intent)
+    }
+    fun openSettings(view: View) {
+        val intent = Intent(this, SettingsActivity::class.java)
+        startActivity(intent)
     }
 }
