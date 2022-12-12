@@ -3,16 +3,15 @@ package com.example.eksamenandroid
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
-import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.recipe_items.view.*
+import kotlinx.coroutines.NonDisposableHandle.parent
 
 class RecipeAdapter(private val activity: Activity, val allData: ArrayList<RecipeItems>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -31,11 +30,12 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val currentActivity = activity
+        val context = holder.itemView.context
         val selectButton = holder.itemView.findViewById<Button>(R.id.SelectButton)
         val currentItem = allData[position]
 
         selectButton.setOnClickListener {
-            runSelect(currentActivity, currentItem.title, currentItem.image, currentItem.calories, currentItem.dietLabel, currentItem.healthLabel, currentItem.cautions)
+            runSelect(currentActivity, context, currentItem.title, currentItem.image, currentItem.calories, currentItem.dietLabel, currentItem.healthLabel, currentItem.cautions)
         }
 
         holder.itemView.apply {
@@ -51,7 +51,7 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
         return allData.size
     }
 
-    private fun runSelect(currentActivity: Activity, title: String?, image: String?, calories: Int?, dietLabel: String?, healthLabel: String?, cautions: String?) {
+    private fun runSelect(currentActivity: Activity, context: Context, title: String?, image: String?, calories: Int?, dietLabel: String?, healthLabel: String?, cautions: String?) {
         when (currentActivity) {
             is MainActivity -> {
                 val recipesDB = RecipesDB(context)
