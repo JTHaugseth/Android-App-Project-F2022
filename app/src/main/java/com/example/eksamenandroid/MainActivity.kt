@@ -17,6 +17,7 @@ import org.json.JSONObject
 import java.net.URL
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.round
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +34,8 @@ class MainActivity : AppCompatActivity() {
             val searchQuery = ""
             val allData = getRecipes(timeOfDay, searchQuery)
 
-            rv.adapter = RecipeAdapter(allData)
+
+            rv.adapter = RecipeAdapter(this@MainActivity, allData)
         }
 
         searchButton.setOnClickListener {
@@ -42,7 +44,7 @@ class MainActivity : AppCompatActivity() {
             Log.i("testy", searchQuery)
             GlobalScope.launch(Dispatchers.Main){
                 val allData = getRecipes(timeOfDay, searchQuery)
-                rv.adapter = RecipeAdapter(allData)
+                rv.adapter = RecipeAdapter(this@MainActivity, allData)
             }
         }
 
@@ -131,6 +133,9 @@ class MainActivity : AppCompatActivity() {
                 val assetItem = dataArray.get(itemnr)
                 dataItem.image = (assetItem as JSONObject).getJSONObject("recipe").getString("image")
                 dataItem.title = (assetItem as JSONObject).getJSONObject("recipe").getString("label")
+                val yieldFloat = (assetItem as JSONObject).getJSONObject("recipe").getInt("yield")
+                val caloriesFloat = (assetItem as JSONObject).getJSONObject("recipe").getInt("calories")
+                dataItem.calories = round(caloriesFloat.toDouble()).toInt() / round(yieldFloat.toDouble()).toInt()
 
                 if ((assetItem as JSONObject).getJSONObject("recipe").getJSONArray("dietLabels").length() != 0) {
                     dataItem.dietLabel = (assetItem as JSONObject).getJSONObject("recipe").getJSONArray("dietLabels").getString(0)

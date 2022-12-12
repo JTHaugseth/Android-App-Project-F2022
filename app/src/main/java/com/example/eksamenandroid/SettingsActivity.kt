@@ -35,7 +35,6 @@ class SettingsActivity() : AppCompatActivity() {
         values.put("diet", "balanced")
         values.put("cuisine", "American")
         values.put("mealtype", "Dinner")
-        values.put("url", "ThisURL")
         db.insert("Settings", null, values)
     }
 
@@ -57,7 +56,6 @@ class SettingsActivity() : AppCompatActivity() {
             val diet = cursor.getString(cursor.getColumnIndexOrThrow("diet"))
             val cuisine = cursor.getString(cursor.getColumnIndexOrThrow("cuisine"))
             val mealtype = cursor.getString(cursor.getColumnIndexOrThrow("mealtype"))
-            val url = cursor.getString(cursor.getColumnIndexOrThrow("url"))
 
             caloriesText.setText("$calories")
             maxHistoryItemsText.setText("$history_items")

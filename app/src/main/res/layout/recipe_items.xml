@@ -40,7 +40,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Select"
-        android:onClick="openTodaysMeals"
+        android:onClick="runSelect"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/RecipeImage"
         app:layout_constraintStart_toStartOf="parent"
