@@ -1,8 +1,10 @@
 package com.example.eksamenandroid
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
@@ -30,6 +32,9 @@ class RecipeAdapter(val allData: ArrayList<RecipeItems>) : RecyclerView.Adapter<
             DietLabel.text = currentItem.dietLabel
             HealthLabel.text = currentItem.healthLabel
             Cautions.text = currentItem.cautions
+            SelectButton.setOnClickListener {
+                Log.i("Position test", currentItem.title.toString())
+            }
         }
     }
 
@@ -37,3 +42,5 @@ class RecipeAdapter(val allData: ArrayList<RecipeItems>) : RecyclerView.Adapter<
         return allData.size
     }
 }
+
+

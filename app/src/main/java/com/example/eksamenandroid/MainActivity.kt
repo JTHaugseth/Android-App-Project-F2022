@@ -44,16 +44,15 @@ class MainActivity : AppCompatActivity() {
                 val allData = getRecipes(timeOfDay, searchQuery)
                 rv.adapter = RecipeAdapter(allData)
             }
-
         }
 
-        searchButton.setOnClickListener {
+        /*selectButton.setOnClickListener {
             val meal = ""
             //finne objektet brukeren trykker select på
             //adde det i en liste
             //export listen til todays meals
             //print listen med noen endringer.
-        }
+        }*/
     }
 
     fun getRecipesTimeOfDay(): String {
