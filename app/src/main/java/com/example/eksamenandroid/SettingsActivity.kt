@@ -30,11 +30,11 @@ class SettingsActivity() : AppCompatActivity() {
             if(count == 0) {
                 val values = ContentValues()
                 values.put("id", 1)
-                values.put("calories", 3000)
+                values.put("calories", 2000)
                 values.put("history_items", 10)
-                values.put("diet", "balanced")
-                values.put("cuisine", "American")
-                values.put("mealtype", "Dinner")
+                values.put("diet", "Not specified")
+                values.put("cuisine", "All")
+                values.put("mealtype", "All")
                 db.insert("Settings", null, values)
             }
         }
