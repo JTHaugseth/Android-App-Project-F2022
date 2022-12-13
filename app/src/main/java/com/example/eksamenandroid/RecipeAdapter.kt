@@ -3,12 +3,14 @@ package com.example.eksamenandroid
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.core.app.ActivityCompat.recreate
+import androidx.core.app.ActivityCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.recipe_items.view.*
@@ -35,6 +37,7 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
         holder.itemView.apply {
             Picasso.get().load(currentItem.image).into(RecipeImage)
             RecipeName.text = currentItem.title
+            CaloriesPerServing.text = "Calories per serving: ${currentItem.calories}"
             DietLabel.text = currentItem.dietLabel
             HealthLabel.text = currentItem.healthLabel
             Cautions.text = currentItem.cautions
@@ -60,6 +63,9 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
 
                     val intent = Intent(it.context, TodaysMeals::class.java)
                     it.context.startActivity(intent)
+
+                    val openURLIntent = Intent(Intent.ACTION_VIEW, Uri.parse(currentItem.url))
+                    it.context.startActivity(openURLIntent)
 
                 }
                 is TodaysMeals -> {

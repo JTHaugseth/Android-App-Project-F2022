@@ -16,30 +16,7 @@ class SettingsActivity() : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings)
 
-        insert()
         readAndSetViews()
-    }
-
-    private fun insert() {
-        val recipesDB = RecipesDB(this)
-        val db = recipesDB.writableDatabase
-        val cursor = db.rawQuery("SELECT COUNT(*) FROM Settings", null)
-
-        if(cursor.moveToFirst()) {
-            val count = cursor.getInt(0)
-            if(count == 0) {
-                val values = ContentValues()
-                values.put("id", 1)
-                values.put("calories", 2000)
-                values.put("history_items", 10)
-                values.put("diet", "Not specified")
-                values.put("cuisine", "All")
-                values.put("mealtype", "All")
-                db.insert("Settings", null, values)
-            }
-        }
-        cursor.close()
-        recipesDB.close()
     }
 
     private fun readAndSetViews() {

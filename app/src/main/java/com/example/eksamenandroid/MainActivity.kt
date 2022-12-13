@@ -1,5 +1,6 @@
 package com.example.eksamenandroid
 
+import android.content.ContentValues
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -24,6 +25,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        insertDefaultSettings()
+
         val rv = findViewById<RecyclerView>(R.id.MainRV)
         val searchButton = findViewById<Button>(R.id.SearchButton)
 
@@ -45,6 +48,28 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun insertDefaultSettings() {
+            val recipesDB = RecipesDB(this)
+            val db = recipesDB.writableDatabase
+            val cursor = db.rawQuery("SELECT COUNT(*) FROM Settings", null)
+
+            if(cursor.moveToFirst()) {
+                val count = cursor.getInt(0)
+                if(count == 0) {
+                    val values = ContentValues()
+                    values.put("id", 1)
+                    values.put("calories", 2000)
+                    values.put("history_items", 10)
+                    values.put("diet", "Not specified")
+                    values.put("cuisine", "All")
+                    values.put("mealtype", "All")
+                    db.insert("Settings", null, values)
+                }
+            }
+            cursor.close()
+            recipesDB.close()
+        }
 
     fun getRecipesTimeOfDay(): String {
         val calendar = Calendar.getInstance()
@@ -124,6 +149,7 @@ class MainActivity : AppCompatActivity() {
                 val yieldFloat = (assetItem as JSONObject).getJSONObject("recipe").getInt("yield")
                 val caloriesFloat = (assetItem as JSONObject).getJSONObject("recipe").getInt("calories")
                 dataItem.calories = round(caloriesFloat.toDouble()).toInt() / round(yieldFloat.toDouble()).toInt()
+                dataItem.url = (assetItem as JSONObject).getJSONObject("recipe").getString("url")
 
                 if ((assetItem as JSONObject).getJSONObject("recipe").getJSONArray("dietLabels").length() != 0) {
                     dataItem.dietLabel = (assetItem as JSONObject).getJSONObject("recipe").getJSONArray("dietLabels").getString(0)

@@ -82,7 +82,6 @@ class TodaysMeals : AppCompatActivity() {
         }else {
             calorieAllowanceText.setTextColor(Color.RED)
         }
-
     }
 
 
