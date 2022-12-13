@@ -2,6 +2,7 @@ package com.example.eksamenandroid
 
 import android.app.Activity
 import android.content.ContentValues
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -54,6 +55,10 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
 
                     Log.i("Activity access", "${currentItem.title} added")
                     recipesDB.close()
+
+                    val intent = Intent(it.context, TodaysMeals::class.java)
+                    it.context.startActivity(intent)
+
                 }
                 //is TodaysMeals -> {
 
