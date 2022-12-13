@@ -3,9 +3,7 @@ package com.example.eksamenandroid
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class TodaysMeals : AppCompatActivity() {
@@ -18,7 +16,7 @@ class TodaysMeals : AppCompatActivity() {
         rv.adapter = RecipeAdapter(this@TodaysMeals, allData)
     }
 
-    fun read() : ArrayList<RecipeItems>{
+    private fun read() : ArrayList<RecipeItems>{
         val allData = ArrayList<RecipeItems>()
         val recipesDB = RecipesDB(this)
         val db = recipesDB.readableDatabase
@@ -35,6 +33,8 @@ class TodaysMeals : AppCompatActivity() {
 
             allData.add(dataItem)
         }
+        cursor.close()
+        recipesDB.close()
         return allData
     }
 

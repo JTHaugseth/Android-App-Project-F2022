@@ -16,36 +16,40 @@ class SettingsActivity() : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings)
 
-        // Bruka onCreate til å kjøre testa mot functions.
-
-        //insert()
+        insert()
         readAndSetViews()
-        //update()
-        //delete()
     }
 
-    private val recipesDB = RecipesDB(this)
-
-    fun insert() {
+    private fun insert() {
+        val recipesDB = RecipesDB(this)
         val db = recipesDB.writableDatabase
-        val values = ContentValues()
-        values.put("id", 1)
-        values.put("calories", 3000)
-        values.put("history_items", 10)
-        values.put("diet", "balanced")
-        values.put("cuisine", "American")
-        values.put("mealtype", "Dinner")
-        db.insert("Settings", null, values)
+        val cursor = db.rawQuery("SELECT COUNT(*) FROM Settings", null)
+
+        if(cursor.moveToFirst()) {
+            val count = cursor.getInt(0)
+            if(count == 0) {
+                val values = ContentValues()
+                values.put("id", 1)
+                values.put("calories", 3000)
+                values.put("history_items", 10)
+                values.put("diet", "balanced")
+                values.put("cuisine", "American")
+                values.put("mealtype", "Dinner")
+                db.insert("Settings", null, values)
+            }
+        }
+        cursor.close()
+        recipesDB.close()
     }
 
-    fun readAndSetViews() {
+    private fun readAndSetViews() {
         val caloriesText = findViewById<EditText>(R.id.CaloriesInput)
         val maxHistoryItemsText = findViewById<EditText>(R.id.MaxHistoryItemsInput)
         val dietDropDownChoice = findViewById<Spinner>(R.id.DietDropDown)
         val cuisineDropDownChoice = findViewById<Spinner>(R.id.CuisineDropDown)
         val mealTypeDropDownChoice = findViewById<Spinner>(R.id.MealTypeDropDown)
 
-
+        val recipesDB = RecipesDB(this)
         val db = recipesDB.readableDatabase
         val cursor = db.query("Settings", null, null, null, null, null, null, null)
 
@@ -74,9 +78,12 @@ class SettingsActivity() : AppCompatActivity() {
 
             Log.i("Settings","id: $id, calories: $calories, History-Items: $history_items, Diet: $diet, Cuisine: $cuisine, Meal-Type: $mealtype")
         }
+        cursor.close()
+        recipesDB.close()
     }
 
-    fun update(caloriesInput: Int, maxHistoryItemsInput: Int, dietInput: String, cuisineInput: String, mealTypeInput: String) {
+    private fun update(caloriesInput: Int, maxHistoryItemsInput: Int, dietInput: String, cuisineInput: String, mealTypeInput: String) {
+        val recipesDB = RecipesDB(this)
         val db = recipesDB.writableDatabase
         val values = ContentValues()
         values.put("calories", caloriesInput)
@@ -85,13 +92,16 @@ class SettingsActivity() : AppCompatActivity() {
         values.put("cuisine", cuisineInput)
         values.put("mealtype", mealTypeInput)
 
-
         db.update("Settings", values, "id = ?", arrayOf("1"))
+
+        recipesDB.close()
     }
 
     fun delete() {
+        val recipesDB = RecipesDB(this)
         val db = recipesDB.writableDatabase
         db.delete("Settings", "id = ?", arrayOf("1"))
+        recipesDB.close()
     }
 
     fun saveAndReturn(view: View) {

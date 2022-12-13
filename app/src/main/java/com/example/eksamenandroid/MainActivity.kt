@@ -25,7 +25,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val rv = findViewById<RecyclerView>(R.id.MainRV)
-        val searchInput = findViewById<EditText>(R.id.InputText)
         val searchButton = findViewById<Button>(R.id.SearchButton)
 
         GlobalScope.launch(Dispatchers.Main){

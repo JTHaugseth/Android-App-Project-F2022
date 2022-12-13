@@ -53,6 +53,7 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
                     db.insert("TodaysMeals", null, values)
 
                     Log.i("Activity access", "${currentItem.title} added")
+                    recipesDB.close()
                 }
                 //is TodaysMeals -> {
 
