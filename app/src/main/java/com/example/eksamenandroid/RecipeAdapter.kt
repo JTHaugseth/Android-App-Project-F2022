@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.core.app.ActivityCompat.recreate
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.recipe_items.view.*
@@ -37,6 +38,7 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
             DietLabel.text = currentItem.dietLabel
             HealthLabel.text = currentItem.healthLabel
             Cautions.text = currentItem.cautions
+            if(currentActivity is TodaysMeals) {selectButton.setText(R.string.REMOVE)}
         }
 
         selectButton.setOnClickListener {
@@ -60,13 +62,16 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
                     it.context.startActivity(intent)
 
                 }
-                //is TodaysMeals -> {
-
-                //}
+                is TodaysMeals -> {
+                    val recipesDB = RecipesDB(activity)
+                    val db = recipesDB.writableDatabase
+                    db.delete("TodaysMeals", "title = ?", arrayOf(currentItem.title))
+                    recipesDB.close()
+                    recreate(activity)
+                }
             }
         }
     }
-
 
     override fun getItemCount(): Int {
         return allData.size

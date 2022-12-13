@@ -28,4 +28,5 @@
         <item>Snack</item>
         <item>Teatime</item>
     </string-array>
+    <string name="REMOVE">REMOVE</string>
 </resources>
