@@ -17,22 +17,29 @@ class SearchHistory : AppCompatActivity() {
         rv.adapter = SearchHistoryAdapter(this@SearchHistory, allDataValidated)
     }
 
-    private fun getSearchHistory(): ArrayList<String> {
-        val historyItems = ArrayList<String>()
+    inner class SearchHistoryItems {
+        var searchInput: String? = null
+        var searchURL: String? = null
+    }
+
+    private fun getSearchHistory(): ArrayList<SearchHistoryItems> {
+        val historyItems = ArrayList<SearchHistoryItems>()
         val recipesDB = RecipesDB(this)
         val db = recipesDB.readableDatabase
         val cursor = db.query("History", null, null, null, null, null, null, null)
 
         while (cursor.moveToNext()) {
-            val searchInput = cursor.getString(cursor.getColumnIndexOrThrow("searchInput"))
-            historyItems.add(searchInput)
+            val dataItem = SearchHistoryItems()
+            dataItem.searchInput = cursor.getString(cursor.getColumnIndexOrThrow("searchInput"))
+            dataItem.searchURL = cursor.getString(cursor.getColumnIndexOrThrow("searchUrl"))
+            historyItems.add(dataItem)
         }
         db.close()
         cursor.close()
         return historyItems
     }
 
-    private fun validateAllData(allData: ArrayList<String>): ArrayList<String> {
+    private fun validateAllData(allData: ArrayList<SearchHistoryItems>): ArrayList<SearchHistoryItems> {
         val recipesDB = RecipesDB(this)
         val db = recipesDB.readableDatabase
         val cursor = db.query("Settings", null, null, null, null, null, null, null)
