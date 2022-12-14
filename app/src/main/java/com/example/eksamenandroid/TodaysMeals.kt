@@ -41,7 +41,7 @@ class TodaysMeals : AppCompatActivity() {
             allData.add(dataItem)
         }
         cursor.close()
-        recipesDB.close()
+        db.close()
         return allData
     }
 
@@ -55,7 +55,7 @@ class TodaysMeals : AppCompatActivity() {
             val calories = cursor.getString(cursor.getColumnIndexOrThrow("calories")).toInt()
             currentCalories += calories
         }
-        recipesDB.close()
+        db.close()
         return currentCalories
     }
 
@@ -69,7 +69,7 @@ class TodaysMeals : AppCompatActivity() {
             val calories = cursor.getString(cursor.getColumnIndexOrThrow("calories")).toInt()
             currentCalories += calories
         }
-        recipesDB.close()
+        db.close()
         return currentCalories
     }
 

@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             cursor.close()
-            recipesDB.close()
+            db.close()
         }
 
     fun getRecipesTimeOfDay(): String {

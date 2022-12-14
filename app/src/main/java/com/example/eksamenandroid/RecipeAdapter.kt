@@ -59,7 +59,7 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
                     db.insert("TodaysMeals", null, values)
 
                     Log.i("Activity access", "${currentItem.title} added")
-                    recipesDB.close()
+                    db.close()
 
                     val intent = Intent(it.context, TodaysMeals::class.java)
                     it.context.startActivity(intent)
@@ -72,7 +72,7 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
                     val recipesDB = RecipesDB(activity)
                     val db = recipesDB.writableDatabase
                     db.delete("TodaysMeals", "title = ?", arrayOf(currentItem.title))
-                    recipesDB.close()
+                    db.close()
                     recreate(activity)
                 }
             }

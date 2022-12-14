@@ -13,10 +13,11 @@ class SearchHistory : AppCompatActivity() {
         
         val rv = findViewById<RecyclerView>(R.id.SearchHistoryRV)
         val allData = getSearchHistory()
-        rv.adapter = SearchHistoryAdapter(this@SearchHistory, allData)
+        val allDataValidated = validateAllData(allData)
+        rv.adapter = SearchHistoryAdapter(this@SearchHistory, allDataValidated)
     }
 
-    fun getSearchHistory(): ArrayList<String> {
+    private fun getSearchHistory(): ArrayList<String> {
         val historyItems = ArrayList<String>()
         val recipesDB = RecipesDB(this)
         val db = recipesDB.readableDatabase
@@ -26,9 +27,16 @@ class SearchHistory : AppCompatActivity() {
             val searchInput = cursor.getString(cursor.getColumnIndexOrThrow("searchInput"))
             historyItems.add(searchInput)
         }
+        db.close()
+        cursor.close()
         return historyItems
     }
 
+    private fun validateAllData(allData: ArrayList<String>): ArrayList<String> {
+        val recipesDB = RecipesDB(this)
+        val db = recipesDB.readableDatabase
+    }
+    
     fun returnToMainMenu(view: View) {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)

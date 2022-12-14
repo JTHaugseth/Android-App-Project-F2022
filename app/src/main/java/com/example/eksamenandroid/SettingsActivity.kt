@@ -56,7 +56,7 @@ class SettingsActivity() : AppCompatActivity() {
             Log.i("Settings","id: $id, calories: $calories, History-Items: $history_items, Diet: $diet, Cuisine: $cuisine, Meal-Type: $mealtype")
         }
         cursor.close()
-        recipesDB.close()
+        db.close()
     }
 
     private fun update(caloriesInput: Int, maxHistoryItemsInput: Int, dietInput: String, cuisineInput: String, mealTypeInput: String) {
@@ -71,14 +71,14 @@ class SettingsActivity() : AppCompatActivity() {
 
         db.update("Settings", values, "id = ?", arrayOf("1"))
 
-        recipesDB.close()
+        db.close()
     }
 
     fun delete() {
         val recipesDB = RecipesDB(this)
         val db = recipesDB.writableDatabase
         db.delete("Settings", "id = ?", arrayOf("1"))
-        recipesDB.close()
+        db.close()
     }
 
     fun saveAndReturn(view: View) {
