@@ -37,6 +37,7 @@ class SearchHistoryAdapter(private val activity: Activity, val allData: ArrayLis
                 is SearchHistory-> {
                     val intent = Intent(it.context, SearchHistoryOnSelect::class.java)
                     intent.putExtra("URL", currentItem.searchURL)
+                    intent.putExtra("TITLE", currentItem.searchInput)
                     it.context.startActivity(intent)
                 }                
             }
