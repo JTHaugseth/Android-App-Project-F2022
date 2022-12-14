@@ -36,7 +36,8 @@ class RecipesDB(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, nul
         db.execSQL (
             "CREATE TABLE History ( " +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "data TEXT" +
+                    "searchInput TEXT, " +
+                    "searchUrl TEXT" +
                     ")"
         )
 

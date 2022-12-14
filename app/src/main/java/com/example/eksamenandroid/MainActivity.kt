@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         searchButton.setOnClickListener {
             val timeOfDay = "https://api.edamam.com/api/recipes/v2?app_key=89289943ee654421a0a4925ef267f71f&app_id=fd84bb48&type=public&mealType=${getRecipesTimeOfDay()}"
-            val searchQuery = filterRecipes()
+            val searchQuery = filterRecipesAndSave()
             Log.i("testy", searchQuery)
             GlobalScope.launch(Dispatchers.Main){
                 val allData = getRecipes(timeOfDay, searchQuery)
@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun filterRecipes(): String{
+    fun filterRecipesAndSave(): String{
         val searchInput = findViewById<EditText>(R.id.InputText)
         val searchQueryString = searchInput.text.toString()
         var updatedSearchString = searchQueryString
@@ -107,10 +107,6 @@ class MainActivity : AppCompatActivity() {
         val cuisine = getSettings.cuisine
         val mealtype = getSettings.mealtype
 
-        Log.i("mealtype", mealtype)
-        Log.i("cuisine", cuisine)
-        Log.i("diet", diet)
-
         if(mealtypeString!="All"){
             url = "$url&mealType=$mealtype"
         }
@@ -121,7 +117,14 @@ class MainActivity : AppCompatActivity() {
             url = "$url&cuisineType=$cuisine"
         }
 
-        Log.i("url", url)
+        val recipesDB = RecipesDB(this)
+        val db = recipesDB.writableDatabase
+        val values = ContentValues()
+        values.put("searchInput", updatedSearchString)
+        values.put("searchUrl", url)
+        db.insert("History", null, values)
+        db.close()
+        
         return url
     }
 
