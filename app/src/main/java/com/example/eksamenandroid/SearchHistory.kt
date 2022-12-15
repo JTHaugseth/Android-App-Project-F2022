@@ -52,7 +52,8 @@ class SearchHistory : AppCompatActivity() {
                 allData.removeAt(i)
             }
         }
-
+        cursor.close()
+        db.close()
         return allData
     }
 

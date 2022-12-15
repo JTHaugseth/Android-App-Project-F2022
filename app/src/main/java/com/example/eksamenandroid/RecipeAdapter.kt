@@ -66,7 +66,6 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
 
                     val openURLIntent = Intent(Intent.ACTION_VIEW, Uri.parse(currentItem.url))
                     it.context.startActivity(openURLIntent)
-
                 }
                 is TodaysMeals -> {
                     val recipesDB = RecipesDB(activity)
@@ -74,6 +73,27 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
                     db.delete("TodaysMeals", "title = ?", arrayOf(currentItem.title))
                     db.close()
                     recreate(activity)
+                }
+                is SearchHistoryOnSelect -> {
+                    val recipesDB = RecipesDB(activity)
+                    val db = recipesDB.writableDatabase
+                    val values = ContentValues()
+                    values.put("title", currentItem.title)
+                    values.put("image", currentItem.image)
+                    values.put("calories", currentItem.calories)
+                    values.put("dietLabel", currentItem.dietLabel)
+                    values.put("healthLabel", currentItem.healthLabel)
+                    values.put("cautions", currentItem.cautions)
+                    db.insert("TodaysMeals", null, values)
+
+                    Log.i("Activity access", "${currentItem.title} added")
+                    db.close()
+
+                    val intent = Intent(it.context, TodaysMeals::class.java)
+                    it.context.startActivity(intent)
+
+                    val openURLIntent = Intent(Intent.ACTION_VIEW, Uri.parse(currentItem.url))
+                    it.context.startActivity(openURLIntent)
                 }
             }
         }
