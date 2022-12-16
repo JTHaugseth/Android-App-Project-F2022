@@ -3,6 +3,8 @@ package com.example.eksamenandroid
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
@@ -34,6 +36,7 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
         val selectButton = holder.itemView.findViewById<Button>(R.id.SelectButton)
         val favoriteButton = holder.itemView.findViewById<ImageButton>(R.id.FavoriteButton)
         val currentItem = allData[position]
+        //favoriteButton.setImageTintList(ColorStateList.valueOf(Color.RED))
 
         holder.itemView.apply {
             Picasso.get().load(currentItem.image).into(RecipeImage)
@@ -43,6 +46,7 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
             HealthLabel.text = currentItem.healthLabel
             Cautions.text = currentItem.cautions
             if(currentActivity is TodaysMeals) {selectButton.setText(R.string.REMOVE)}
+            validateIfFavorite(favoriteButton, currentItem.title)
         }
 
         selectButton.setOnClickListener {
@@ -63,8 +67,19 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
         favoriteButton.setOnClickListener {
             when (currentActivity) {
                 is MainActivity, is SearchHistoryOnSelect, is TodaysMeals -> {
-                    populateFavorites(currentItem.title, currentItem.image, currentItem.calories, currentItem.dietLabel,
-                        currentItem.healthLabel, currentItem.cautions, currentItem.url)
+                    val recipesDB = RecipesDB(activity)
+                    val db = recipesDB.readableDatabase
+                    val cursor = db.rawQuery("SELECT * FROM Favorites WHERE title = ?", arrayOf(currentItem.title))
+                    if (!cursor.moveToFirst()) {
+                        populateFavorites(currentItem.title, currentItem.image, currentItem.calories, currentItem.dietLabel,
+                            currentItem.healthLabel, currentItem.cautions, currentItem.url)
+                        favoriteButton.setImageTintList(ColorStateList.valueOf(Color.RED))
+                    } else {
+                        db.delete("Favorites", "title = ?", arrayOf(currentItem.title))
+                        favoriteButton.setImageTintList(ColorStateList.valueOf(Color.WHITE))
+                    }
+                    cursor.close()
+                    db.close()
                 }
                 is FavoritesActivity -> {
                     val recipesDB = RecipesDB(activity)
@@ -75,6 +90,18 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
                 }
             }
         }
+    }
+
+    private fun validateIfFavorite(favoriteButton: ImageButton, title: String?) {
+        val recipesDB = RecipesDB(activity)
+        val db = recipesDB.readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM Favorites WHERE title = ?", arrayOf(title))
+
+        if (cursor.moveToFirst()) {
+            favoriteButton.setImageTintList(ColorStateList.valueOf(Color.RED))
+        }
+        cursor.close()
+        db.close()
     }
 
     override fun getItemCount(): Int {
