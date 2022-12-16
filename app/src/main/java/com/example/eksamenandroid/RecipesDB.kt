@@ -44,7 +44,12 @@ class RecipesDB(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, nul
         db.execSQL (
             "CREATE TABLE Favorites ( " +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "data TEXT" +
+                    "title TEXT, " +
+                    "image TEXT, " +
+                    "calories INTEGER, " +
+                    "dietLabel TEXT, " +
+                    "healthLabel TEXT, " +
+                    "cautions TEXT " +
                     ")"
         )
     }

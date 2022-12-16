@@ -31,6 +31,7 @@
         android:id="@+id/FavoritesRV"
         android:layout_width="409dp"
         android:layout_height="641dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/FavoritesMainMenuButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
