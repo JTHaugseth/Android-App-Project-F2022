@@ -49,7 +49,8 @@ class RecipesDB(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, nul
                     "calories INTEGER, " +
                     "dietLabel TEXT, " +
                     "healthLabel TEXT, " +
-                    "cautions TEXT " +
+                    "cautions TEXT, " +
+                    "url TEXT" +
                     ")"
         )
     }

@@ -47,15 +47,7 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
 
         selectButton.setOnClickListener {
             when (currentActivity) {
-                is MainActivity -> {
-                    populateTodaysMeals(currentItem.title, currentItem.image, currentItem.calories, currentItem.dietLabel,
-                        currentItem.healthLabel, currentItem.cautions, currentItem.url, it)
-                }
-                is SearchHistoryOnSelect -> {
-                    populateTodaysMeals(currentItem.title, currentItem.image, currentItem.calories, currentItem.dietLabel,
-                        currentItem.healthLabel, currentItem.cautions, currentItem.url, it)
-                }
-                is FavoritesActivity -> {
+                is MainActivity, is SearchHistoryOnSelect, is FavoritesActivity -> {
                     populateTodaysMeals(currentItem.title, currentItem.image, currentItem.calories, currentItem.dietLabel,
                         currentItem.healthLabel, currentItem.cautions, currentItem.url, it)
                 }
@@ -70,17 +62,9 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
         }
         favoriteButton.setOnClickListener {
             when (currentActivity) {
-                is MainActivity -> {
+                is MainActivity, is SearchHistoryOnSelect, is TodaysMeals -> {
                     populateFavorites(currentItem.title, currentItem.image, currentItem.calories, currentItem.dietLabel,
-                        currentItem.healthLabel, currentItem.cautions)
-                }
-                is SearchHistoryOnSelect -> {
-                    populateFavorites(currentItem.title, currentItem.image, currentItem.calories, currentItem.dietLabel,
-                        currentItem.healthLabel, currentItem.cautions)
-                }
-                is TodaysMeals -> {
-                    populateFavorites(currentItem.title, currentItem.image, currentItem.calories, currentItem.dietLabel,
-                        currentItem.healthLabel, currentItem.cautions)
+                        currentItem.healthLabel, currentItem.cautions, currentItem.url)
                 }
                 is FavoritesActivity -> {
                     val recipesDB = RecipesDB(activity)
@@ -134,7 +118,8 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
         calories: Int?,
         dietLabel: String?,
         healthLabel: String?,
-        cautions: String?
+        cautions: String?,
+        url: String?
     ) {
         val recipesDB = RecipesDB(activity)
         val db = recipesDB.writableDatabase
@@ -145,6 +130,7 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
         values.put("dietLabel", dietLabel)
         values.put("healthLabel", healthLabel)
         values.put("cautions", cautions)
+        values.put("url", url)
         db.insert("Favorites", null, values)
 
         Log.i("Activity access", "$title to favorites")

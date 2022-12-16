@@ -30,6 +30,7 @@ class FavoritesActivity : AppCompatActivity() {
             dataItem.dietLabel = cursor.getString(cursor.getColumnIndexOrThrow("dietLabel"))
             dataItem.healthLabel = cursor.getString(cursor.getColumnIndexOrThrow("healthLabel"))
             dataItem.cautions = cursor.getString(cursor.getColumnIndexOrThrow("cautions"))
+            dataItem.url = cursor.getString(cursor.getColumnIndexOrThrow("url"))
 
             allData.add(dataItem)
         }
