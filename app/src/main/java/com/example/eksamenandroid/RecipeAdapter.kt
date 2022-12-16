@@ -70,6 +70,7 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
                     val recipesDB = RecipesDB(activity)
                     val db = recipesDB.readableDatabase
                     val cursor = db.rawQuery("SELECT * FROM Favorites WHERE title = ?", arrayOf(currentItem.title))
+
                     if (!cursor.moveToFirst()) {
                         populateFavorites(currentItem.title, currentItem.image, currentItem.calories, currentItem.dietLabel,
                             currentItem.healthLabel, currentItem.cautions, currentItem.url)
@@ -99,6 +100,8 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
 
         if (cursor.moveToFirst()) {
             favoriteButton.setImageTintList(ColorStateList.valueOf(Color.RED))
+        } else {
+            favoriteButton.setImageTintList(ColorStateList.valueOf(Color.WHITE))
         }
         cursor.close()
         db.close()
