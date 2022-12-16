@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         insertDefaultSettings()
+        checkUserScroll()
 
         val rv = findViewById<RecyclerView>(R.id.MainRV)
         val searchButton = findViewById<Button>(R.id.SearchButton)
@@ -143,6 +145,8 @@ class MainActivity : AppCompatActivity() {
                 importedData = URL(timeOfDayURL).readText().toString()
             }
             Log.i("testing", importedData)
+            /*val links = (JSONObject(importedData).get("_link") as JSONArray)*/
+
             val dataArray = (JSONObject(importedData).get("hits") as JSONArray)
             (0 until dataArray.length()).forEach{itemnr ->
                 val dataItem = RecipeItems()
@@ -190,6 +194,30 @@ class MainActivity : AppCompatActivity() {
         db.close()
 
         return MySettings(id, calories, history_items, diet, cuisine, mealtype)
+    }
+
+    fun checkUserScroll(){
+        val recyclerView = findViewById<RecyclerView>(R.id.MainRV)
+
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val hello = "hello"
+                val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
+
+                val totalItemCount = layoutManager.itemCount
+
+                if (lastVisibleItemPosition == totalItemCount - 1) {
+                    Log.i("It reached bottom", hello)
+                }
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+            }
+        })
     }
 
     fun openSearchHistory(view: View) {
