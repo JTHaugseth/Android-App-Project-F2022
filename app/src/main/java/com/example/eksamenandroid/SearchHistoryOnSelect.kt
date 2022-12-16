@@ -5,11 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.json.JSONArray
 import org.json.JSONObject
 import java.net.URL
@@ -29,9 +27,14 @@ class SearchHistoryOnSelect : AppCompatActivity() {
 
         GlobalScope.launch(Dispatchers.Main){
             val allData = getRecipes(url)
+            previousAllData = allData
+            checkUserScroll()
             rv.adapter = RecipeAdapter(this@SearchHistoryOnSelect, allData)
         }
     }
+
+    private lateinit var previousAllData: ArrayList<RecipeItems>
+    private var nextPageURL: String? = null
 
     private suspend fun getRecipes(url: String?): ArrayList<RecipeItems> {
         val allData = ArrayList<RecipeItems>()
@@ -39,6 +42,7 @@ class SearchHistoryOnSelect : AppCompatActivity() {
         GlobalScope.async {
             val importedData: String
             importedData = URL(url).readText().toString()
+            nextPageURL = (JSONObject(importedData).get("_links") as JSONObject).getJSONObject("next").getString("href").toString()
             val dataArray = (JSONObject(importedData).get("hits") as JSONArray)
             (0 until dataArray.length()).forEach { itemnr ->
                 val dataItem = RecipeItems()
@@ -65,6 +69,38 @@ class SearchHistoryOnSelect : AppCompatActivity() {
             }
         }.await()
         return allData
+    }
+
+    suspend fun checkUserScroll() {
+        val recyclerView = findViewById<RecyclerView>(R.id.SearchHistoryOnSelectRV)
+        var listenerTrigger = false
+
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
+
+
+                val totalItemCount = layoutManager.itemCount
+                GlobalScope.launch(Dispatchers.Main) {
+                    if (!listenerTrigger && lastVisibleItemPosition == totalItemCount - 1) {
+                        listenerTrigger = true
+                        val newAllData = getRecipes(nextPageURL.toString())
+                        previousAllData.addAll(newAllData)
+                        recyclerView.adapter = RecipeAdapter(this@SearchHistoryOnSelect, previousAllData)
+                        recyclerView.scrollToPosition(previousAllData.size - 23)
+                        delay(2000)
+                        listenerTrigger = false
+                    }
+                }
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+            }
+        })
     }
 
     fun backToSearchHistory(view: View) {

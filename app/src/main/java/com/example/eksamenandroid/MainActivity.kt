@@ -10,10 +10,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.json.JSONArray
 import org.json.JSONObject
 import java.net.URL
@@ -27,7 +24,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         insertDefaultSettings()
-        checkUserScroll()
 
         val rv = findViewById<RecyclerView>(R.id.MainRV)
         val searchButton = findViewById<Button>(R.id.SearchButton)
@@ -36,6 +32,8 @@ class MainActivity : AppCompatActivity() {
             val timeOfDay = "https://api.edamam.com/api/recipes/v2?app_key=89289943ee654421a0a4925ef267f71f&app_id=fd84bb48&type=public&mealType=${getRecipesTimeOfDay()}"
             val searchQuery = ""
             val allData = getRecipes(timeOfDay, searchQuery)
+            previousAllData = allData
+            checkUserScroll()
 
             rv.adapter = RecipeAdapter(this@MainActivity, allData)
         }
@@ -46,10 +44,17 @@ class MainActivity : AppCompatActivity() {
             Log.i("testy", searchQuery)
             GlobalScope.launch(Dispatchers.Main){
                 val allData = getRecipes(timeOfDay, searchQuery)
+                previousAllData = allData
+                checkUserScroll()
                 rv.adapter = RecipeAdapter(this@MainActivity, allData)
             }
         }
     }
+
+    private lateinit var previousAllData: ArrayList<RecipeItems>
+    private var nextPageURL: String? = null
+
+
 
     private fun insertDefaultSettings() {
             val recipesDB = RecipesDB(this)
@@ -119,13 +124,16 @@ class MainActivity : AppCompatActivity() {
             url = "$url&cuisineType=$cuisine"
         }
 
-        val recipesDB = RecipesDB(this)
-        val db = recipesDB.writableDatabase
-        val values = ContentValues()
-        values.put("searchInput", updatedSearchString)
-        values.put("searchUrl", url)
-        db.insert("History", null, values)
-        db.close()
+        if (updatedSearchString.isNotEmpty()) {
+            val recipesDB = RecipesDB(this)
+            val db = recipesDB.writableDatabase
+            val values = ContentValues()
+            values.put("searchInput", updatedSearchString)
+            values.put("searchUrl", url)
+            db.insert("History", null, values)
+            db.close()
+        }
+
         
         return url
     }
@@ -145,8 +153,8 @@ class MainActivity : AppCompatActivity() {
                 importedData = URL(timeOfDayURL).readText().toString()
             }
             Log.i("testing", importedData)
-            /*val links = (JSONObject(importedData).get("_link") as JSONArray)*/
-
+            nextPageURL = (JSONObject(importedData).get("_links") as JSONObject).getJSONObject("next").getString("href").toString()
+            Log.i("testing next page url", nextPageURL.toString())
             val dataArray = (JSONObject(importedData).get("hits") as JSONArray)
             (0 until dataArray.length()).forEach{itemnr ->
                 val dataItem = RecipeItems()
@@ -196,21 +204,29 @@ class MainActivity : AppCompatActivity() {
         return MySettings(id, calories, history_items, diet, cuisine, mealtype)
     }
 
-    fun checkUserScroll(){
+    suspend fun checkUserScroll() {
         val recyclerView = findViewById<RecyclerView>(R.id.MainRV)
+        var listenerTrigger = false
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
                 val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                val hello = "hello"
                 val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
 
-                val totalItemCount = layoutManager.itemCount
 
-                if (lastVisibleItemPosition == totalItemCount - 1) {
-                    Log.i("It reached bottom", hello)
+                val totalItemCount = layoutManager.itemCount
+                GlobalScope.launch(Dispatchers.Main) {
+                    if (!listenerTrigger && lastVisibleItemPosition == totalItemCount - 1) {
+                        listenerTrigger = true
+                        val newAllData = getRecipes("", nextPageURL.toString())
+                        previousAllData.addAll(newAllData)
+                        recyclerView.adapter = RecipeAdapter(this@MainActivity, previousAllData)
+                        recyclerView.scrollToPosition(previousAllData.size - 23)
+                        delay(2000)
+                        listenerTrigger = false
+                    }
                 }
             }
 
