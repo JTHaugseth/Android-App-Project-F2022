@@ -36,7 +36,6 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
         val selectButton = holder.itemView.findViewById<Button>(R.id.SelectButton)
         val favoriteButton = holder.itemView.findViewById<ImageButton>(R.id.FavoriteButton)
         val currentItem = allData[position]
-        //favoriteButton.setImageTintList(ColorStateList.valueOf(Color.RED))
 
         holder.itemView.apply {
             Picasso.get().load(currentItem.image).into(RecipeImage)
