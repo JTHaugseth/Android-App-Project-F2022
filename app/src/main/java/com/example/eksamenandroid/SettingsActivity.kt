@@ -15,10 +15,11 @@ class SettingsActivity() : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings)
-
+        
         readAndSetViews()
     }
 
+    // This function reads the Settings-database and sets all the View-values to the current settings-values. 
     private fun readAndSetViews() {
         val caloriesText = findViewById<EditText>(R.id.CaloriesInput)
         val maxHistoryItemsText = findViewById<EditText>(R.id.MaxHistoryItemsInput)
@@ -52,13 +53,13 @@ class SettingsActivity() : AppCompatActivity() {
             val mealtypeAdapter = mealTypeDropDownChoice.adapter as ArrayAdapter<String>
             val selectedMealtypeIndex = mealtypeAdapter.getPosition(mealtype)
             mealTypeDropDownChoice.setSelection(selectedMealtypeIndex)
-
-            Log.i("Settings","id: $id, calories: $calories, History-Items: $history_items, Diet: $diet, Cuisine: $cuisine, Meal-Type: $mealtype")
+            
         }
         cursor.close()
         db.close()
     }
 
+    // Updates the settings-database
     private fun update(caloriesInput: Int, maxHistoryItemsInput: Int, dietInput: String, cuisineInput: String, mealTypeInput: String) {
         val recipesDB = RecipesDB(this)
         val db = recipesDB.writableDatabase
@@ -74,13 +75,8 @@ class SettingsActivity() : AppCompatActivity() {
         db.close()
     }
 
-    fun delete() {
-        val recipesDB = RecipesDB(this)
-        val db = recipesDB.writableDatabase
-        db.delete("Settings", "id = ?", arrayOf("1"))
-        db.close()
-    }
-
+    // When the user clicks the SAVE-button, it will read all View-values, and call the update() function to update the settings database. 
+    // After that, it will send the user to the Main Menu. 
     fun saveAndReturn(view: View) {
         val caloriesInput = findViewById<EditText>(R.id.CaloriesInput).text.toString().toInt()
         val maxHistoryItemsInput = findViewById<EditText>(R.id.MaxHistoryItemsInput).text.toString().toInt()
@@ -93,9 +89,7 @@ class SettingsActivity() : AppCompatActivity() {
         var mealTypeInput = mealTypeDropDown.selectedItem as String
 
         update(caloriesInput, maxHistoryItemsInput, dietInput, cuisineInput, mealTypeInput)
-
-        Log.i("Current update rapport", "Calories: $caloriesInput, Max History Items: $maxHistoryItemsInput, Diet: $dietInput, Cuisine: $cuisineInput, MealType: $mealTypeInput")
-
+        
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }

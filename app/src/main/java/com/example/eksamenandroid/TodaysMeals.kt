@@ -5,7 +5,6 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.EditText
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
@@ -14,15 +13,18 @@ class TodaysMeals : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.todays_meals)
 
+        // Sends allData to RecipeAdapter to populate the Recycler View.
         val rv = findViewById<RecyclerView>(R.id.TodaysMealsRV)
         val allData = read()
         rv.adapter = RecipeAdapter(this@TodaysMeals, allData)
 
+        // Validates of the user is over- or under the calorie allowance.
         val currentCalories = getCurrentCalories()
         val caloriesAllowance = getCalorieAllowance()
         editCalorieAllowance(currentCalories, caloriesAllowance)
     }
 
+    // Reads TodaysMeals database, and populates the Recycler view with recipes.
     private fun read() : ArrayList<RecipeItems>{
         val allData = ArrayList<RecipeItems>()
         val recipesDB = RecipesDB(this)
@@ -45,6 +47,7 @@ class TodaysMeals : AppCompatActivity() {
         return allData
     }
 
+    // Reads and returns Calorie allowance from Settings database.
     private fun getCalorieAllowance(): Int {
         var currentCalories = 0
         val recipesDB = RecipesDB(this)
@@ -59,6 +62,7 @@ class TodaysMeals : AppCompatActivity() {
         return currentCalories
     }
 
+    // Reads and adds together every recipes calories in todays meals, and returns total amount of calories.
     private fun getCurrentCalories(): Int {
         var currentCalories = 0
         val recipesDB = RecipesDB(this)
@@ -73,6 +77,8 @@ class TodaysMeals : AppCompatActivity() {
         return currentCalories
     }
 
+    // Takes in calories allowance, and total calories from Todays meals. Checks if calories from todays meals is under or over calorie allowance.
+    // Changes color of textview to illustrate if the user is over or under their limit.
     private fun editCalorieAllowance(currentCalories: Int, caloriesAllowance: Int) {
         val calorieAllowanceText = findViewById<TextView>(R.id.TodaysCalories)
         calorieAllowanceText.setText("$currentCalories/$caloriesAllowance")
@@ -84,7 +90,7 @@ class TodaysMeals : AppCompatActivity() {
         }
     }
 
-
+    // Return the user to the Main Menu.
     fun returnToMainMenu(view: View) {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)

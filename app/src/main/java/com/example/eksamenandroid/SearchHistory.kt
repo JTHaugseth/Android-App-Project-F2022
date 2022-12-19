@@ -11,17 +11,20 @@ class SearchHistory : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.search_history)
 
+        // Sends allData to SearchHistoryAdapter to populate the Recycler View.
         val rv = findViewById<RecyclerView>(R.id.SearchHistoryRV)
         val allData = getSearchHistory()
         val allDataValidated = validateAllData(allData)
         rv.adapter = SearchHistoryAdapter(this@SearchHistory, allDataValidated)
     }
 
+    // Inner class to create SearchHistoryItems-object we can use in the adapter. 
     inner class SearchHistoryItems {
         var searchInput: String? = null
         var searchURL: String? = null
     }
 
+    // Reads the History-database and creates objects to send to the adapter. 
     private fun getSearchHistory(): ArrayList<SearchHistoryItems> {
         val historyItems = ArrayList<SearchHistoryItems>()
         val recipesDB = RecipesDB(this)
@@ -39,6 +42,9 @@ class SearchHistory : AppCompatActivity() {
         return historyItems
     }
 
+    // Reads the Settings to get maxHistoryItems allowed. 
+    // It will then reverse allData to get the newest searched recipes on top.
+    // If the amount of searched recipes (search history) is higher than the maxHistoryItems allowed, it will remove all recipes over the limit. 
     private fun validateAllData(allData: ArrayList<SearchHistoryItems>): ArrayList<SearchHistoryItems> {
         val recipesDB = RecipesDB(this)
         val db = recipesDB.readableDatabase
@@ -57,6 +63,7 @@ class SearchHistory : AppCompatActivity() {
         return allData
     }
 
+    // Returns the user back to the Main menu 
     fun returnToMainMenu(view: View) {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)

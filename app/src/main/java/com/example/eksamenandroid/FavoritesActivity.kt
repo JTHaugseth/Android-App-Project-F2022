@@ -11,11 +11,13 @@ class FavoritesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.favorites)
 
+        // Sends allData to RecipeAdapter to populate the Recycler View.
         val rv = findViewById<RecyclerView>(R.id.FavoritesRV)
         val allData = read()
         rv.adapter = RecipeAdapter(this@FavoritesActivity, allData)
     }
 
+    // Reads favorites from database, and populates the Recycler view with recipes. 
     private fun read() : ArrayList<RecipeItems>{
         val allData = ArrayList<RecipeItems>()
         val recipesDB = RecipesDB(this)
@@ -39,6 +41,7 @@ class FavoritesActivity : AppCompatActivity() {
         return allData
     }
 
+    // Return the user to the MainActivity
     fun mainMenuButton(view: View) {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
