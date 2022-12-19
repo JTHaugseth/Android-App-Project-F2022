@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_gray"
+    android:background="@color/Off_White"
     tools:context=".MainActivity">
 
     <Button
@@ -59,9 +59,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Search Recipe"
-        android:backgroundTint="#FFFFFF"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/SearchButton"
         app:layout_constraintStart_toStartOf="parent" />

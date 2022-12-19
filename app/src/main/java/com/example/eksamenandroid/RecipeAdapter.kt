@@ -76,7 +76,7 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
                         favoriteButton.setImageTintList(ColorStateList.valueOf(Color.RED))
                     } else {
                         db.delete("Favorites", "title = ?", arrayOf(currentItem.title))
-                        favoriteButton.setImageTintList(ColorStateList.valueOf(Color.WHITE))
+                        favoriteButton.setImageTintList(ColorStateList.valueOf(Color.DKGRAY))
                     }
                     cursor.close()
                     db.close()
@@ -100,7 +100,7 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
         if (cursor.moveToFirst()) {
             favoriteButton.setImageTintList(ColorStateList.valueOf(Color.RED))
         } else {
-            favoriteButton.setImageTintList(ColorStateList.valueOf(Color.WHITE))
+            favoriteButton.setImageTintList(ColorStateList.valueOf(Color.DKGRAY))
         }
         cursor.close()
         db.close()

@@ -153,7 +153,11 @@ class MainActivity : AppCompatActivity() {
                 importedData = URL(timeOfDayURL).readText().toString()
             }
             Log.i("testing", importedData)
-            nextPageURL = (JSONObject(importedData).get("_links") as JSONObject).getJSONObject("next").getString("href").toString()
+            if((JSONObject(importedData).get("_links") as JSONObject).length() == 0) {
+                nextPageURL = ""
+            } else {
+                nextPageURL = (JSONObject(importedData).get("_links") as JSONObject).getJSONObject("next").getString("href").toString()
+            }
             Log.i("testing next page url", nextPageURL.toString())
             val dataArray = (JSONObject(importedData).get("hits") as JSONArray)
             (0 until dataArray.length()).forEach{itemnr ->
@@ -220,12 +224,17 @@ class MainActivity : AppCompatActivity() {
                 GlobalScope.launch(Dispatchers.Main) {
                     if (!listenerTrigger && lastVisibleItemPosition == totalItemCount - 1) {
                         listenerTrigger = true
-                        val newAllData = getRecipes("", nextPageURL.toString())
-                        previousAllData.addAll(newAllData)
-                        recyclerView.adapter = RecipeAdapter(this@MainActivity, previousAllData)
-                        recyclerView.scrollToPosition(previousAllData.size - 23)
-                        delay(2000)
-                        listenerTrigger = false
+                        if(nextPageURL == "") {
+                            delay(2000)
+                            listenerTrigger = false
+                        }else {
+                            val newAllData = getRecipes("", nextPageURL.toString())
+                            previousAllData.addAll(newAllData)
+                            recyclerView.adapter = RecipeAdapter(this@MainActivity, previousAllData)
+                            recyclerView.scrollToPosition(previousAllData.size - 23)
+                            delay(2000)
+                            listenerTrigger = false
+                        }
                     }
                 }
             }

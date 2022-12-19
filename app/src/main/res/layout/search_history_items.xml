@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    android:background="@color/dark_gray">
+    android:background="@color/Off_White">
 
     <TextView
         android:id="@+id/SearchHistoryInputText"
@@ -13,7 +13,7 @@
         android:layout_marginLeft="5dp"
         android:text="Example Text"
         android:textSize="30sp"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

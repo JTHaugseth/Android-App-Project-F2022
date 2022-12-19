@@ -3,6 +3,7 @@ package com.example.eksamenandroid
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -42,7 +43,12 @@ class SearchHistoryOnSelect : AppCompatActivity() {
         GlobalScope.async {
             val importedData: String
             importedData = URL(url).readText().toString()
-            nextPageURL = (JSONObject(importedData).get("_links") as JSONObject).getJSONObject("next").getString("href").toString()
+                if((JSONObject(importedData).get("_links") as JSONObject).length() == 0) {
+                    nextPageURL = ""
+                } else {
+                    nextPageURL = (JSONObject(importedData).get("_links") as JSONObject).getJSONObject("next").getString("href").toString()
+                }
+
             val dataArray = (JSONObject(importedData).get("hits") as JSONArray)
             (0 until dataArray.length()).forEach { itemnr ->
                 val dataItem = RecipeItems()
@@ -87,12 +93,18 @@ class SearchHistoryOnSelect : AppCompatActivity() {
                 GlobalScope.launch(Dispatchers.Main) {
                     if (!listenerTrigger && lastVisibleItemPosition == totalItemCount - 1) {
                         listenerTrigger = true
-                        val newAllData = getRecipes(nextPageURL.toString())
-                        previousAllData.addAll(newAllData)
-                        recyclerView.adapter = RecipeAdapter(this@SearchHistoryOnSelect, previousAllData)
-                        recyclerView.scrollToPosition(previousAllData.size - 23)
-                        delay(2000)
-                        listenerTrigger = false
+                        if(nextPageURL == "") {
+                            delay(2000)
+                            listenerTrigger = false
+                        }else{
+                            val newAllData = getRecipes(nextPageURL.toString())
+                            previousAllData.addAll(newAllData)
+                            recyclerView.adapter = RecipeAdapter(this@SearchHistoryOnSelect, previousAllData)
+                            recyclerView.scrollToPosition(previousAllData.size - 23)
+                            delay(2000)
+                            listenerTrigger = false
+                        }
+
                     }
                 }
             }
