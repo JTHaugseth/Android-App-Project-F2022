@@ -1,32 +1,76 @@
 <resources>
     <string name="app_name">Eksamen Android</string>
     <string-array name="Diet">
-        <item>Not specified</item>
-        <item>balanced</item>
-        <item>high-fiber</item>
-        <item>high-Protein</item>
-        <item>low-carbs</item>
-        <item>low-fat</item>
-        <item>low-sodium</item>
+        <item>
+            <font color="#FFFFFFFF">Not specified</font>
+        </item>
+        <item>
+            <font color="#FFFFFFFF">balanced</font>
+        </item>
+        <item>
+            <font color="#FFFFFFFF">high-fiber</font>
+        </item>
+        <item>
+            <font color="#FFFFFFFF">high-Protein</font>
+        </item>
+        <item>
+            <font color="#FFFFFFFF">low-carbs</font>
+        </item>
+        <item>
+            <font color="#FFFFFFFF">low-fat</font>
+        </item>
+        <item>
+            <font color="#FFFFFFFF">low-sodium</font>
+        </item>
     </string-array>
     <string-array name="Cuisine">
-        <item>All</item>
-        <item>American</item>
-        <item>Asian</item>
-        <item>British</item>
-        <item>Caribbean</item>
-        <item>Central Europe</item>
-        <item>Chinese</item>
-        <item>Eastern Europe</item>
-        <item>French</item>
+        <item>
+            <font color="#FFFFFFFF">All</font>
+        </item>
+        <item>
+            <font color="#FFFFFFFF">American</font>
+        </item>
+        <item>
+            <font color="#FFFFFFFF">Asian</font>
+        </item>
+        <item>
+            <font color="#FFFFFFFF">British</font>
+        </item>
+        <item>
+            <font color="#FFFFFFFF">Caribbean</font>
+        </item>
+        <item>
+            <font color="#FFFFFFFF">Central Europe</font>
+        </item>
+        <item>
+            <font color="#FFFFFFFF">Chinese</font>
+        </item>
+        <item>
+            <font color="#FFFFFFFF">Eastern Europe</font>
+        </item>
+        <item>
+            <font color="#FFFFFFFF">French</font>
+        </item>
     </string-array>
     <string-array name="Mealtype">
-        <item>All</item>
-        <item>Breakfast</item>
-        <item>Lunch</item>
-        <item>Dinner</item>
-        <item>Snack</item>
-        <item>Teatime</item>
+        <item>
+            <font color="#FFFFFFFF">All</font>
+        </item>
+        <item>
+            <font color="#FFFFFFFF">Breakfast</font>
+        </item>
+        <item>
+            <font color="#FFFFFFFF">Lunch</font>
+        </item>
+        <item>
+            <font color="#FFFFFFFF">Dinner</font>
+        </item>
+        <item>
+            <font color="#FFFFFFFF">Snack</font>
+        </item>
+        <item>
+            <font color="#FFFFFFFF">Teatime</font>
+        </item>
     </string-array>
     <string name="REMOVE">REMOVE</string>
 </resources>
