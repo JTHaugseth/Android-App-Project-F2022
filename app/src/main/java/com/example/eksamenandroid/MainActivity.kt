@@ -210,6 +210,7 @@ class MainActivity : AppCompatActivity() {
         return allData
     }
 
+    // Reference to Report: Page 2-3 Code Structure
     // This class can be used to access different values from the settings. Used in filterRecipesAndSave() and getSettingsFromDB()
     data class MySettings(val id: Int, val calories: String, val history_items: String, val diet: String, val cuisine: String, val mealtype: String)
 

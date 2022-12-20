@@ -23,6 +23,7 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
 
     inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view)
 
+    // Reference to Report: Page 4-5 Recycler View
     // Populates the Recycler Views with recipe_items.xml.
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ViewHolder(
@@ -34,6 +35,7 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
         )
     }
 
+    // Reference to Report: Page 4-5 Recycler View
     // Uses allData's object information to change recipe_items.xml values. Button-comments below ->
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val currentActivity = activity
@@ -41,6 +43,7 @@ class RecipeAdapter(private val activity: Activity, val allData: ArrayList<Recip
         val favoriteButton = holder.itemView.findViewById<ImageButton>(R.id.FavoriteButton)
         val currentItem = allData[position]
 
+        // Reference to Report: Page 3 What we did and the alternatives
         holder.itemView.apply {
             Picasso.get().load(currentItem.image).into(RecipeImage)
             RecipeName.text = currentItem.title

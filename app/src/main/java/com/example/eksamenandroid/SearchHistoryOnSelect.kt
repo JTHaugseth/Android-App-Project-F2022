@@ -19,6 +19,7 @@ class SearchHistoryOnSelect : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.search_history_onselect)
 
+        // Reference to Report: Page 5-6 Passing data through intents between activities
         // Retrieves title and url from intent in SearchHistoryAdapter
         val title = intent.getStringExtra("TITLE")
         val searchHistoryTitle = findViewById<TextView>(R.id.SearchHistoryOnSelectTitle)
@@ -39,6 +40,7 @@ class SearchHistoryOnSelect : AppCompatActivity() {
         }
     }
 
+    // Reference to Report: Page 2-3 Code Structure
     // Variables to store next page url and previous all data array. Used in checkUserScroll() and getRecipes()
     private lateinit var previousAllData: ArrayList<RecipeItems>
     private var nextPageURL: String? = null

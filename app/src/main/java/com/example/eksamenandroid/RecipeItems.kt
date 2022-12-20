@@ -1,5 +1,6 @@
 package com.example.eksamenandroid
 
+// Reference to Report: Page 4 Elvis Operator
 class RecipeItems {
     var image: String? = null
     var title: String? = null

@@ -36,6 +36,7 @@ class SearchHistoryAdapter(private val activity: Activity, val allData: ArrayLis
             SearchHistoryInputText.text = currentItem.searchInput
         }
 
+        // Reference to Report: Page 5-6 Passing data through intents between activities
         // When the user presses search in SearchHistory, they will be sent to the SearchHistoryOnSelect activity.
         // The selected search history will also pass the selected objects title and search url through the intent. 
         searchHistoryButton.setOnClickListener {
